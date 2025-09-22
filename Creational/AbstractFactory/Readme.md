@@ -16,6 +16,8 @@ In this example, we have:
 
 ## Structure
 
+![]()
+
 ### 1. Abstract Products
 
 * `IButton` → Defines the interface for buttons.
