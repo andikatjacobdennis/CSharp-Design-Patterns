@@ -2,7 +2,7 @@
 
 | **Category**   | **Pattern**             | **Purpose**                                                             |
 | -------------- | ----------------------- | ----------------------------------------------------------------------- |
-| **Creational** | Abstract Factory        | Creates instances for multiple families of related classes              |
+| **Creational** | Abstract Factory        | Provide an interface for creating families of related or dependent objects without specifying their concrete classes.              |
 |                | Builder                 | Separates object construction from its representation                   |
 |                | Factory Method          | Creates instances of derived classes                                    |
 |                | Prototype               | Produces a copy or clone of a fully initialized instance                |
