@@ -69,3 +69,19 @@ Rendering Dark TextBox
 Rendering Light Button
 Rendering Light TextBox
 ```
+
+---
+
+## Benefits of Abstract Factory
+
+* **Encapsulation of object creation** → Clients don’t need to know which concrete class is being used.
+* **Consistency across products** → Ensures UI components follow the same theme.
+* **Flexibility** → Easily extendable for new themes (e.g., `HighContrastThemeFactory`).
+
+---
+
+## Use Cases
+
+* GUI libraries (Light/Dark themes, OS-specific widgets).
+* Cross-platform systems (Windows/Mac/Linux factories).
+* Product families where consistency is required across multiple components.
