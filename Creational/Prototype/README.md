@@ -1,4 +1,4 @@
-# Prototype Pattern in C\#
+# Prototype Design Pattern in C\#
 
 ## Overview
 
