@@ -4,7 +4,7 @@
 | -------------- | ----------------------- | ----------------------------------------------------------------------- |
 | **Creational** | Abstract Factory        | Provide an interface for creating families of related or dependent objects without specifying their concrete classes.              |
 |                | Builder                 | Separates object construction from its representation                   |
-|                | Factory Method          | Creates instances of derived classes                                    |
+|                | Factory Method          | Defines an interface for creating an object, but lets subclasses decide which class to instantiate.                                    |
 |                | Prototype               | Produces a copy or clone of a fully initialized instance                |
 |                | Singleton               | Ensures a class has only one instance                                   |
 | **Structural** | Adapter                 | Aligns interfaces of different classes                                  |
