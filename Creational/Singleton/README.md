@@ -18,20 +18,7 @@ In this example:
 
 ### Diagram
 
-```
-+----------------+
-|    Singleton   |
-+----------------+
-| - instance     |
-| - Singleton()  |
-+----------------+
-| + Instance     |
-| + DoSomething()|
-+----------------+
-        ^
-        |
-      Client
-```
+![Structure Diagram](structure.png)
 
 ### 1. Singleton Class
 
