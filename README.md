@@ -13,7 +13,7 @@ The patterns are organized by category, following the structure from the GoF boo
 ### Creational Patterns
 These patterns deal with object creation mechanisms, abstracting the instantiation process to make systems more flexible.
 
-- **Abstract Factory**: Provides an interface for creating families of related or dependent objects without specifying their concrete classes.
+- **Abstract Factory**: Provide an interface for creating families of related or dependent objects without specifying their concrete classes.
 - **Builder**: Separates the construction of a complex object from its representation, allowing the same construction process to create different representations.
 - **Factory Method**: Defines an interface for creating an object, but lets subclasses decide which class to instantiate.
 - **Prototype**: Specifies the kinds of objects to create using a prototypical instance, and creates new objects by copying this prototype.
