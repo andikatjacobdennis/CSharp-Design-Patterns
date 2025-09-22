@@ -16,6 +16,10 @@ In this example:
 
 ## Structure
 
+### Diagram
+
+![Structure Diagram](structure.png)
+
 ### 1. Builder Interface
 
 * `TextConverter` → Abstract class defining methods for building parts of a product:
