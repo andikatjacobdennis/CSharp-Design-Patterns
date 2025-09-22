@@ -18,6 +18,10 @@ In this example:
 
 ## Structure
 
+### Diagram
+
+![Structure Diagram](structure.png)
+
 ### 1. Abstract Product
 
 * `Document` → Declares common operations for documents (`Open`, `Save`).
