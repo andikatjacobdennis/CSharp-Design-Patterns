@@ -19,7 +19,7 @@ In this example, we have:
 
 ### Diagram
 
-![UML Diagram illustrating the Facade pattern](diagram_placeholder.png)
+![UML Diagram illustrating the Facade pattern](facade_structure.png)
 
 ### 1. Facade Class
 
