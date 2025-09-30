@@ -1,7 +1,3 @@
-Here’s a filled-out version of your template specifically for the **Decorator Pattern** in **C#**:
-
----
-
 # **Decorator Pattern** in **C#**
 
 ## Overview
@@ -121,10 +117,3 @@ Drawing border with width 3
 * **Interface vs. Abstract Class**: Use an abstract class (`VisualComponent`) when sharing code among decorators; otherwise, an interface suffices.
 * **Dynamic Composition**: Decorators can be combined in any order, allowing flexible behavior.
 * **Overhead**: Many small objects are created, so balance flexibility with performance needs.
-
----
-
-If you want, I can also **draw the UML diagram for this C# Decorator example** and embed it in Markdown so it’s ready to include in your documentation.
-
-Do you want me to do that next?
-
