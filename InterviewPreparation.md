@@ -1,7 +1,5 @@
 ## 1. Definitions of Design Patterns
 
-# Shopping Cart Design Patterns Table
-
 | Category | Pattern | Definition | Analogy |
 |----------|---------|-------------------|---------------------|
 | **CREATIONAL** | | **How objects are created** |  |
