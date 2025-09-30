@@ -1,133 +1,106 @@
 using System;
 
-// Simple Point struct for coordinates
-public struct Point
+namespace AdapterPatternExample
 {
-    public float X { get; }
-    public float Y { get; }
-
-    public Point(float x, float y)
+    // Target interface
+    public abstract class Shape
     {
-        X = x;
-        Y = y;
+        public abstract void BoundingBox(out int bottomLeftX, out int bottomLeftY, out int topRightX, out int topRightY);
+        public abstract bool IsEmpty();
+        public abstract Manipulator CreateManipulator();
     }
 
-    public override string ToString() => $"({X}, {Y})";
-}
-
-// Target interface (Shape)
-public interface IShape
-{
-    void BoundingBox(out Point bottomLeft, out Point topRight);
-    Manipulator CreateManipulator();
-}
-
-// Adaptee (TextView)
-public class TextView
-{
-    // Dummy implementation for demonstration
-    public void GetOrigin(out float x, out float y)
+    // Manipulator for Shapes
+    public abstract class Manipulator
     {
-        x = 10f; // Example origin X
-        y = 20f; // Example origin Y
+        public abstract void Manipulate();
     }
 
-    public void GetExtent(out float width, out float height)
+    // Adaptee
+    public class TextView
     {
-        width = 200f;  // Example width
-        height = 50f;  // Example height
-    }
-
-    public bool IsEmpty()
-    {
-        return false; // Example: not empty
-    }
-}
-
-// Abstract Manipulator class
-public abstract class Manipulator
-{
-    // Base class for manipulators; could have methods for animation/dragging
-}
-
-// Concrete Manipulator for TextShape
-public class TextManipulator : Manipulator
-{
-    private readonly TextShape _shape;
-
-    public TextManipulator(TextShape shape)
-    {
-        _shape = shape;
-    }
-
-    // Could add dragging logic here if needed
-}
-
-// Adapter (TextShape) using object adapter pattern (composition)
-public class TextShape : IShape
-{
-    private readonly TextView _text;
-
-    public TextShape(TextView text)
-    {
-        _text = text;
-    }
-
-    public void BoundingBox(out Point bottomLeft, out Point topRight)
-    {
-        float left, bottom, width, height;
-        _text.GetOrigin(out left, out bottom);
-        _text.GetExtent(out width, out height);
-
-        bottomLeft = new Point(left, bottom);
-        topRight = new Point(left + width, bottom + height);
-    }
-
-    // Additional method forwarded from TextView (not part of IShape, but exposed by adapter)
-    public bool IsEmpty()
-    {
-        return _text.IsEmpty();
-    }
-
-    public Manipulator CreateManipulator()
-    {
-        return new TextManipulator(this);
-    }
-}
-
-// Client (e.g., DrawingEditor simulation)
-public class DrawingEditor
-{
-    public void AddShape(IShape shape)
-    {
-        Point bottomLeft, topRight;
-        shape.BoundingBox(out bottomLeft, out topRight);
-        Console.WriteLine($"Added shape with bounding box: BottomLeft {bottomLeft}, TopRight {topRight}");
-
-        var manipulator = shape.CreateManipulator();
-        Console.WriteLine($"Created manipulator of type: {manipulator.GetType().Name}");
-    }
-}
-
-// Example usage
-class Program
-{
-    static void Main()
-    {
-        // Create the adaptee
-        TextView textView = new TextView();
-
-        // Adapt it to IShape using the adapter
-        IShape textShape = new TextShape(textView);
-
-        // Use in client (DrawingEditor)
-        DrawingEditor editor = new DrawingEditor();
-        editor.AddShape(textShape);
-
-        // Demonstrate additional method (IsEmpty)
-        if (textShape is TextShape ts)
+        public void GetOrigin(out int x, out int y)
         {
-            Console.WriteLine($"Is the text shape empty? {ts.IsEmpty()}");
+            x = 10; 
+            y = 20;
+        }
+
+        public void GetExtent(out int width, out int height)
+        {
+            width = 100; 
+            height = 50;
+        }
+
+        public bool IsEmpty()
+        {
+            return false;
+        }
+    }
+
+    // Object Adapter
+    public class TextShape : Shape
+    {
+        private TextView _textView;
+
+        public TextShape(TextView textView)
+        {
+            _textView = textView;
+        }
+
+        public override void BoundingBox(out int bottomLeftX, out int bottomLeftY, out int topRightX, out int topRightY)
+        {
+            int originX, originY, width, height;
+            _textView.GetOrigin(out originX, out originY);
+            _textView.GetExtent(out width, out height);
+
+            bottomLeftX = originX;
+            bottomLeftY = originY;
+            topRightX = originX + width;
+            topRightY = originY + height;
+        }
+
+        public override bool IsEmpty()
+        {
+            return _textView.IsEmpty();
+        }
+
+        public override Manipulator CreateManipulator()
+        {
+            return new TextManipulator(this);
+        }
+    }
+
+    // Manipulator Implementation
+    public class TextManipulator : Manipulator
+    {
+        private Shape _shape;
+
+        public TextManipulator(Shape shape)
+        {
+            _shape = shape;
+        }
+
+        public override void Manipulate()
+        {
+            Console.WriteLine("Manipulating shape...");
+        }
+    }
+
+    // Client
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            TextView textView = new TextView();
+            Shape textShape = new TextShape(textView);
+
+            textShape.BoundingBox(out int x1, out int y1, out int x2, out int y2);
+            Console.WriteLine($"BoundingBox: ({x1},{y1}) to ({x2},{y2})");
+
+            Console.WriteLine($"IsEmpty: {textShape.IsEmpty()}");
+
+            Manipulator manipulator = textShape.CreateManipulator();
+            manipulator.Manipulate();
         }
     }
 }
