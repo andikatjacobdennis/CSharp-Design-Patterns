@@ -8,7 +8,7 @@
 | | Factory Method | Lets subclasses decide what to create | **Create different product types** - digital, physical, subscription |
 | | Prototype | Creates new objects by copying | **Clone product templates** for quick creation |
 | | Singleton | Only one instance can exist | **Cart manager** - single instance managing all carts |
-| **STRUCTURAL** | | **Building Object Structures** | **Organizing cart components** |
+| **STRUCTURAL** | | **How classes/objects are composed** |  |
 | | Adapter | Makes incompatible interfaces work together | **Adapt legacy payment systems** to modern cart |
 | | Bridge | Separates abstraction from implementation | **Separate cart** from storage (database, session, cache) |
 | | Composite | Treats single and groups of objects the same | **Product bundles** - treat single products and bundles uniformly |
@@ -16,7 +16,7 @@
 | | Facade | Provides simple interface to complex system | **Simple checkout** hiding payment, inventory, shipping |
 | | Flyweight | Shares objects to save memory | **Share product data** (name, description) across items |
 | | Proxy | Controls access to another object | **Lazy loading images** - load high-res only when viewed |
-| **BEHAVIORAL** | | **Managing Object Communication** | **Handling cart interactions** |
+| **BEHAVIORAL** | | **How objects interact & communicate** |  |
 | | Chain of Responsibility | Passes request through chain of handlers | **Discount validation chain** - student → seasonal → loyalty |
 | | Command | Turns requests into stand-alone objects | **Cart operations** - add, remove, update as undoable commands |
 | | Interpreter | Interprets and executes language grammar | **Interpret promo codes** - "SAVE10", "FREESHIP50" |
