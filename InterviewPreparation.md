@@ -1,33 +1,35 @@
 ## 1. Definitions of Design Patterns
 
-| Category | Pattern | Definition | Analogy |
-|----------|---------|-------------------|--------------|
-| **CREATIONAL** | | **Getting Objects Born** | **How you get new things** |
-| | Abstract Factory | Creates families of related objects | **IKEA catalog** - get whole matching furniture sets |
-| | Builder | Builds complex objects step by step | **Lego kit** - follow instructions to build something big |
-| | Factory Method | Lets subclasses decide what to create | **HR Department** - they decide who to hire for specific jobs |
-| | Prototype | Creates new objects by copying | **Xerox machine** - just duplicate an existing object |
-| | Singleton | Only one instance can exist | **The Company CEO** - there can only be one |
-| **STRUCTURAL** | | **Building Object Structures** | **How you arrange things** |
-| | Adapter | Makes incompatible interfaces work together | **Power plug adapter** - makes US plug work in EU socket |
-| | Bridge | Separates abstraction from implementation | **Remote control** - same buttons work on different TV brands |
-| | Composite | Treats single and groups of objects the same | **Organization chart** - manager with employees under them |
-| | Decorator | Adds features to objects dynamically | **Layered clothing** - add jacket, scarf, gloves as needed |
-| | Facade | Provides simple interface to complex system | **Hotel reception** - one desk handles all complex services |
-| | Flyweight | Shares objects to save memory | **Library book** - one physical book, many people can borrow |
-| | Proxy | Controls access to another object | **Security guard** - checks who can enter the building |
-| **BEHAVIORAL** | | **Managing Object Communication** | **How things talk to each other** |
-| | Chain of Responsibility | Passes request through chain of handlers | **Bureaucratic paperwork** - passed desk to desk until handled |
-| | Command | Turns requests into stand-alone objects | **Restaurant order** - waiter gives chef a slip to execute |
-| | Interpreter | Interprets and executes language grammar | **Google Translate** - understands and acts on language commands |
-| | Iterator | Accesses elements of collection sequentially | **TV remote "Next"** - goes through channels one by one |
-| | Mediator | Simplifies communication between objects | **Group chat admin** - everyone talks through one person |
-| | Memento | Saves and restores object state | **Ctrl+Z / Undo** - goes back to previous state |
-| | Observer | Notifies dependents of state changes | **YouTube subscription** - get notified when new video posts |
-| | State | Changes behavior when state changes | **Traffic light** - stop (red) vs go (green) behavior |
-| | Strategy | Lets you switch between algorithms | **GPS navigation** - choose fastest or cheapest route |
-| | Template Method | Defines skeleton with customizable steps | **Job application** - same form, everyone fills different details |
-| | Visitor | Adds operations without changing classes | **Insurance assessor** - checks every room in your house |
+# Shopping Cart Design Patterns Table
+
+| Category | Pattern | Simple Definition | Shopping Cart Usage |
+|----------|---------|-------------------|---------------------|
+| **CREATIONAL** | | **Getting Objects Born** | **Creating cart, products, users** |
+| | Abstract Factory | Creates families of related objects | **Regional shopping experiences** - different tax, currency for US vs EU |
+| | Builder | Builds complex objects step by step | **Build complex orders** with items, shipping, insurance |
+| | Factory Method | Lets subclasses decide what to create | **Create different product types** - digital, physical, subscription |
+| | Prototype | Creates new objects by copying | **Clone product templates** for quick creation |
+| | Singleton | Only one instance can exist | **Cart manager** - single instance managing all carts |
+| **STRUCTURAL** | | **Building Object Structures** | **Organizing cart components** |
+| | Adapter | Makes incompatible interfaces work together | **Adapt legacy payment systems** to modern cart |
+| | Bridge | Separates abstraction from implementation | **Separate cart** from storage (database, session, cache) |
+| | Composite | Treats single and groups of objects the same | **Product bundles** - treat single products and bundles uniformly |
+| | Decorator | Adds features to objects dynamically | **Add features to products** - gift wrap, insurance, shipping |
+| | Facade | Provides simple interface to complex system | **Simple checkout** hiding payment, inventory, shipping |
+| | Flyweight | Shares objects to save memory | **Share product data** (name, description) across items |
+| | Proxy | Controls access to another object | **Lazy loading images** - load high-res only when viewed |
+| **BEHAVIORAL** | | **Managing Object Communication** | **Handling cart interactions** |
+| | Chain of Responsibility | Passes request through chain of handlers | **Discount validation chain** - student → seasonal → loyalty |
+| | Command | Turns requests into stand-alone objects | **Cart operations** - add, remove, update as undoable commands |
+| | Interpreter | Interprets and executes language grammar | **Interpret promo codes** - "SAVE10", "FREESHIP50" |
+| | Iterator | Accesses elements of collection sequentially | **Iterate through cart items** for display or calculation |
+| | Mediator | Simplifies communication between objects | **Cart mediator** between items, inventory, pricing |
+| | Memento | Saves and restores object state | **Save/restore cart** for undo or session recovery |
+| | Observer | Notifies dependents of state changes | **Notify users** on price changes or cart abandonment |
+| | State | Changes behavior when state changes | **Cart states** - empty, active, checkout, completed |
+| | Strategy | Lets you switch between algorithms | **Pricing strategies** - member, bulk, seasonal pricing |
+| | Template Method | Defines skeleton with customizable steps | **Checkout process** with country-specific tax |
+| | Visitor | Adds operations without modifying classes | **Cart visitors** for price, tax, inventory calculations |
 
 ## 2. Difference between Factory Method and Builder
 
