@@ -20,7 +20,7 @@ In this example, we have:
 
 ### Diagram
 
-![UML Diagram illustrating the Flyweight pattern](diagram_placeholder.png)
+![UML Diagram illustrating the Flyweight pattern](flyweight_structure.png)
 
 ### 1. Core Interface / Abstract Class
 
