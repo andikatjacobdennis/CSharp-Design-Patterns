@@ -19,7 +19,7 @@ In this example, we have:
 
 ### Diagram
 
-![UML Diagram illustrating the Composite pattern](diagram_placeholder.png)
+![UML Diagram illustrating the Composite pattern](composite_structure.png)
 
 ### 1. Core Interface / Abstract Class
 
