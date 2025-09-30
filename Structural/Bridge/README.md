@@ -21,7 +21,7 @@ In this example, we have:
 
 ### Diagram
 
-![UML Diagram illustrating the pattern](diagram_placeholder.png)
+![UML Diagram illustrating the pattern](bridge_structure.png)
 
 ### 1. Core Interface / Abstract Class
 
