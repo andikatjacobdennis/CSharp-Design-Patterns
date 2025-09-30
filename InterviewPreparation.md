@@ -2,9 +2,9 @@
 
 # Shopping Cart Design Patterns Table
 
-| Category | Pattern | Simple Definition | Shopping Cart Usage |
+| Category | Pattern | Definition | Analogy |
 |----------|---------|-------------------|---------------------|
-| **CREATIONAL** | | **Getting Objects Born** | **Creating cart, products, users** |
+| **CREATIONAL** | | **How objects are created** |  |
 | | Abstract Factory | Creates families of related objects | **Regional shopping experiences** - different tax, currency for US vs EU |
 | | Builder | Builds complex objects step by step | **Build complex orders** with items, shipping, insurance |
 | | Factory Method | Lets subclasses decide what to create | **Create different product types** - digital, physical, subscription |
