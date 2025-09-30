@@ -1,30 +1,33 @@
 ## 1. Definitions of Design Patterns
 
-| **Category**   | **Pattern**             | **Purpose**                                                             |
-| -------------- | ----------------------- | ----------------------------------------------------------------------- |
-| **Creational** | Abstract Factory        | Provide an interface for creating families of related or dependent objects without specifying their concrete classes.              |
-|                | Builder                 | Separates object construction from its representation                   |
-|                | Factory Method          | Defines an interface for creating an object, but lets subclasses decide which class to instantiate.                                    |
-|                | Prototype               | Produces a copy or clone of a fully initialized instance                |
-|                | Singleton               | Ensures a class has only one instance                                   |
-| **Structural** | Adapter                 | Aligns interfaces of different classes                                  |
-|                | Bridge                  | Decouples an object’s interface from its implementation                 |
-|                | Composite               | Organizes objects into tree structures of simple and composite elements |
-|                | Decorator               | Dynamically adds responsibilities to objects                            |
-|                | Facade                  | Provides a unified interface to a subsystem                             |
-|                | Flyweight               | Uses fine-grained objects for efficient sharing                         |
-|                | Proxy                   | Represents or controls access to another object                         |
-| **Behavioral** | Chain of Responsibility | Passes a request along a chain of objects                               |
-|                | Command                 | Encapsulates a request as an object                                     |
-|                | Interpreter             | Implements language elements within a program                           |
-|                | Iterator                | Provides sequential access to elements in a collection                  |
-|                | Mediator                | Simplifies communication between classes                                |
-|                | Memento                 | Captures and restores an object’s internal state                        |
-|                | Observer                | Notifies multiple classes about state changes                           |
-|                | State                   | Changes an object’s behavior when its state changes                     |
-|                | Strategy                | Encapsulates an algorithm within a class                                |
-|                | Template Method         | Defers specific steps of an algorithm to subclasses                     |
-|                | Visitor                 | Adds new operations to classes without modifying them                   |
+| Category | Pattern | Definition | Analogy |
+|----------|---------|-------------------|--------------|
+| **CREATIONAL** | | **Getting Objects Born** | **How you get new things** |
+| | Abstract Factory | Creates families of related objects | **IKEA catalog** - get whole matching furniture sets |
+| | Builder | Builds complex objects step by step | **Lego kit** - follow instructions to build something big |
+| | Factory Method | Lets subclasses decide what to create | **HR Department** - they decide who to hire for specific jobs |
+| | Prototype | Creates new objects by copying | **Xerox machine** - just duplicate an existing object |
+| | Singleton | Only one instance can exist | **The Company CEO** - there can only be one |
+| **STRUCTURAL** | | **Building Object Structures** | **How you arrange things** |
+| | Adapter | Makes incompatible interfaces work together | **Power plug adapter** - makes US plug work in EU socket |
+| | Bridge | Separates abstraction from implementation | **Remote control** - same buttons work on different TV brands |
+| | Composite | Treats single and groups of objects the same | **Organization chart** - manager with employees under them |
+| | Decorator | Adds features to objects dynamically | **Layered clothing** - add jacket, scarf, gloves as needed |
+| | Facade | Provides simple interface to complex system | **Hotel reception** - one desk handles all complex services |
+| | Flyweight | Shares objects to save memory | **Library book** - one physical book, many people can borrow |
+| | Proxy | Controls access to another object | **Security guard** - checks who can enter the building |
+| **BEHAVIORAL** | | **Managing Object Communication** | **How things talk to each other** |
+| | Chain of Responsibility | Passes request through chain of handlers | **Bureaucratic paperwork** - passed desk to desk until handled |
+| | Command | Turns requests into stand-alone objects | **Restaurant order** - waiter gives chef a slip to execute |
+| | Interpreter | Interprets and executes language grammar | **Google Translate** - understands and acts on language commands |
+| | Iterator | Accesses elements of collection sequentially | **TV remote "Next"** - goes through channels one by one |
+| | Mediator | Simplifies communication between objects | **Group chat admin** - everyone talks through one person |
+| | Memento | Saves and restores object state | **Ctrl+Z / Undo** - goes back to previous state |
+| | Observer | Notifies dependents of state changes | **YouTube subscription** - get notified when new video posts |
+| | State | Changes behavior when state changes | **Traffic light** - stop (red) vs go (green) behavior |
+| | Strategy | Lets you switch between algorithms | **GPS navigation** - choose fastest or cheapest route |
+| | Template Method | Defines skeleton with customizable steps | **Job application** - same form, everyone fills different details |
+| | Visitor | Adds operations without changing classes | **Insurance assessor** - checks every room in your house |
 
 ## 2. Difference between Factory Method and Builder
 
