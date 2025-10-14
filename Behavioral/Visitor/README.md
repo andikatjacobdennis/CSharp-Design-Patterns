@@ -267,7 +267,7 @@ The system is *open* for new operations but *closed* for modification of compone
 
 ## Common Use Cases
 
-**Hardware / Device Monitoring Systems** — Run different diagnostic or analytics passes over a fixed set of device types.
-**Compilers / AST Processing** — Apply visitors for syntax checking, code generation, or optimization.
-**Game Engines / Graphics Systems** — Traverse scene graphs for rendering, physics, or lighting calculations.
-**Business Applications** — Apply financial, audit, or reporting visitors over a data model.
+* **Hardware / Device Monitoring Systems** — Run different diagnostic or analytics passes over a fixed set of device types.
+* **Compilers / AST Processing** — Apply visitors for syntax checking, code generation, or optimization.
+* **Game Engines / Graphics Systems** — Traverse scene graphs for rendering, physics, or lighting calculations.
+* **Business Applications** — Apply financial, audit, or reporting visitors over a data model.
