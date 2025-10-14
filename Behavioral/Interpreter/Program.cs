@@ -1,192 +1,124 @@
 using System;
-using System.Collections.Generic;
 
-// Context stores variable assignments
+// 1. Context (Contains information global to the interpreter)
+// For this simple math example, Context is minimal but crucial for the pattern structure.
+// In real-world scenarios, it might hold variable assignments (e.g., 'x=5'), input streams, etc.
 public class Context
 {
-    private readonly Dictionary<string, bool> _variables = new();
+    public string GlobalInfo { get; set; } = "Interpretation context initialized.";
+}
 
-    public bool Lookup(string name)
+// 2. AbstractExpression (Declares the Interpret operation)
+// This is the common interface for all nodes in the Abstract Syntax Tree (AST).
+public abstract class AbstractExpression
+{
+    // The Interpret method takes the Context and returns the result of the expression.
+    public abstract int Interpret(Context context);
+}
+
+// 3. TerminalExpression (Represents terminal symbols, e.g., literals/numbers)
+public class NumberExpression : AbstractExpression
+{
+    private readonly int _number;
+
+    // Stores the literal value for this terminal node.
+    public NumberExpression(int number)
     {
-        return _variables.ContainsKey(name) && _variables[name];
+        _number = number;
     }
 
-    public void Assign(VariableExp variable, bool value)
+    // Interprets the terminal symbol: simply returns its stored value.
+    public override int Interpret(Context context)
     {
-        _variables[variable.Name] = value;
+        // For demonstration, we print the interpretation trace.
+        Console.WriteLine($"[Number] Interpreting: {_number}");
+        return _number;
     }
 }
 
-// Abstract expression
-public abstract class BooleanExp
+// 3. NonterminalExpression (Represents nonterminal symbols, e.g., operators)
+public class AddExpression : AbstractExpression
 {
-    public abstract bool Evaluate(Context context);
-    public abstract BooleanExp Replace(string name, BooleanExp exp);
-    public abstract BooleanExp Copy();
-}
+    private readonly AbstractExpression _leftOperand;
+    private readonly AbstractExpression _rightOperand;
 
-// Variable expression
-public class VariableExp : BooleanExp
-{
-    public string Name { get; }
-
-    public VariableExp(string name)
+    // Nonterminal nodes hold references to their sub-expressions (operands).
+    public AddExpression(AbstractExpression left, AbstractExpression right)
     {
-        Name = name;
+        _leftOperand = left;
+        _rightOperand = right;
     }
 
-    public override bool Evaluate(Context context)
+    // Interprets the nonterminal symbol by recursively calling Interpret on its operands.
+    public override int Interpret(Context context)
     {
-        return context.Lookup(Name);
-    }
-
-    public override BooleanExp Replace(string name, BooleanExp exp)
-    {
-        if (Name == name)
-            return exp.Copy();
-        return new VariableExp(Name);
-    }
-
-    public override BooleanExp Copy()
-    {
-        return new VariableExp(Name);
+        int leftResult = _leftOperand.Interpret(context);
+        int rightResult = _rightOperand.Interpret(context);
+        
+        int result = leftResult + rightResult;
+        
+        // For demonstration, we print the operation result.
+        Console.WriteLine($"[Add] Calculating: {leftResult} + {rightResult} = {result}");
+        return result;
     }
 }
 
-// Constant expression
-public class Constant : BooleanExp
+// 3. NonterminalExpression (Another operator)
+public class SubtractExpression : AbstractExpression
 {
-    private readonly bool _value;
+    private readonly AbstractExpression _leftOperand;
+    private readonly AbstractExpression _rightOperand;
 
-    public Constant(bool value)
+    public SubtractExpression(AbstractExpression left, AbstractExpression right)
     {
-        _value = value;
+        _leftOperand = left;
+        _rightOperand = right;
     }
 
-    public override bool Evaluate(Context context)
+    // Interprets the nonterminal symbol by recursively calling Interpret on its operands.
+    public override int Interpret(Context context)
     {
-        return _value;
-    }
-
-    public override BooleanExp Replace(string name, BooleanExp exp)
-    {
-        return new Constant(_value);
-    }
-
-    public override BooleanExp Copy()
-    {
-        return new Constant(_value);
+        int leftResult = _leftOperand.Interpret(context);
+        int rightResult = _rightOperand.Interpret(context);
+        
+        int result = leftResult - rightResult;
+        
+        // For demonstration, we print the operation result.
+        Console.WriteLine($"[Subtract] Calculating: {leftResult} - {rightResult} = {result}");
+        return result;
     }
 }
 
-// AND expression
-public class AndExp : BooleanExp
+// 4. Client (Builds the AST and initiates interpretation)
+public class Program
 {
-    private readonly BooleanExp _operand1;
-    private readonly BooleanExp _operand2;
-
-    public AndExp(BooleanExp operand1, BooleanExp operand2)
+    public static void Main(string[] args)
     {
-        _operand1 = operand1;
-        _operand2 = operand2;
-    }
+        // Define the expression we want to interpret: (4 - 2) + 5
+        
+        Console.WriteLine("--- Building Abstract Syntax Tree (AST) for: (4 - 2) + 5 ---");
+        
+        // Step 1: Create terminal expressions for the numbers
+        AbstractExpression four = new NumberExpression(4);
+        AbstractExpression two = new NumberExpression(2);
+        AbstractExpression five = new NumberExpression(5);
 
-    public override bool Evaluate(Context context)
-    {
-        return _operand1.Evaluate(context) && _operand2.Evaluate(context);
-    }
+        // Step 2: Create the inner nonterminal expression (4 - 2)
+        AbstractExpression subtractExp = new SubtractExpression(four, two);
 
-    public override BooleanExp Replace(string name, BooleanExp exp)
-    {
-        return new AndExp(_operand1.Replace(name, exp), _operand2.Replace(name, exp));
-    }
+        // Step 3: Create the root nonterminal expression (4 - 2) + 5
+        AbstractExpression rootExpression = new AddExpression(subtractExp, five);
 
-    public override BooleanExp Copy()
-    {
-        return new AndExp(_operand1.Copy(), _operand2.Copy());
-    }
-}
-
-// OR expression
-public class OrExp : BooleanExp
-{
-    private readonly BooleanExp _operand1;
-    private readonly BooleanExp _operand2;
-
-    public OrExp(BooleanExp operand1, BooleanExp operand2)
-    {
-        _operand1 = operand1;
-        _operand2 = operand2;
-    }
-
-    public override bool Evaluate(Context context)
-    {
-        return _operand1.Evaluate(context) || _operand2.Evaluate(context);
-    }
-
-    public override BooleanExp Replace(string name, BooleanExp exp)
-    {
-        return new OrExp(_operand1.Replace(name, exp), _operand2.Replace(name, exp));
-    }
-
-    public override BooleanExp Copy()
-    {
-        return new OrExp(_operand1.Copy(), _operand2.Copy());
-    }
-}
-
-// NOT expression
-public class NotExp : BooleanExp
-{
-    private readonly BooleanExp _operand;
-
-    public NotExp(BooleanExp operand)
-    {
-        _operand = operand;
-    }
-
-    public override bool Evaluate(Context context)
-    {
-        return !_operand.Evaluate(context);
-    }
-
-    public override BooleanExp Replace(string name, BooleanExp exp)
-    {
-        return new NotExp(_operand.Replace(name, exp));
-    }
-
-    public override BooleanExp Copy()
-    {
-        return new NotExp(_operand.Copy());
-    }
-}
-
-// Client
-class Program
-{
-    static void Main()
-    {
+        Console.WriteLine("AST built successfully.");
+        Console.WriteLine("\n--- Interpretation Phase ---\n");
+        
         Context context = new Context();
-        VariableExp x = new VariableExp("X");
-        VariableExp y = new VariableExp("Y");
+        Console.WriteLine($"Context status: {context.GlobalInfo}\n");
 
-        // Expression: (true AND X) OR (Y AND (NOT X))
-        BooleanExp expression = new OrExp(
-            new AndExp(new Constant(true), x),
-            new AndExp(y, new NotExp(x))
-        );
+        // Interpret the entire expression by calling Interpret on the root node
+        int finalResult = rootExpression.Interpret(context);
 
-        context.Assign(x, false);
-        context.Assign(y, true);
-
-        bool result = expression.Evaluate(context);
-        Console.WriteLine(result); // True
-
-        // Replace Y with NOT Z
-        VariableExp z = new VariableExp("Z");
-        BooleanExp replacement = expression.Replace("Y", new NotExp(z));
-        context.Assign(z, true);
-
-        Console.WriteLine(replacement.Evaluate(context)); // False
+        Console.WriteLine("\n--- Final Result ---");
+        Console.WriteLine($"The result of the expression (4 - 2) + 5 is: {finalResult}");
     }
 }
