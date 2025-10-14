@@ -43,7 +43,7 @@ These patterns address how classes and objects interact and distribute responsib
 - **State**: Allows an object to alter its behavior when its internal state changes, appearing as if the object changed its class.
 - **Strategy**: Defines a family of algorithms, encapsulates each one, and makes them interchangeable.
 - **Template Method**: Defines the skeleton of an algorithm in a method, deferring some steps to subclasses.
-- **Visitor**: Represents an operation to be performed on the elements of an object structure, letting you define new operations without changing the classes.
+- **Visitor**: Represent an operation to be performed on the elements of an object structure. Visitor lets you define a new operation without changing the classes of the elements on which it operates.
 
 ## Repository Structure
 - Each pattern is in its own directory (e.g., `Creational/AbstractFactory/`), containing:
