@@ -1,184 +1,233 @@
 using System;
 using System.Collections.Generic;
 
-// --- 1. Element Hierarchy (Visitable Objects) ---
+// ============================================================================
+//  VISITOR PATTERN: PC COMPONENT DIAGNOSTICS SYSTEM (Real-World Example)
+//  Author: Ajdcode
+//  Description: Demonstrates how to run new diagnostics (operations)
+//               without modifying existing PC component classes.
+// ============================================================================
+
+// ------------------------------
+// 1. ELEMENT HIERARCHY
+// ------------------------------
 
 /// <summary>
-/// The Abstract Element class defining the Accept operation.
-/// This allows a visitor to 'visit' the element.
+/// The abstract base class for all PC components.
+/// Each component must implement Accept() to allow a visitor to "visit" it.
 /// </summary>
-abstract class Equipment
+abstract class PCComponent
 {
     public string Name { get; }
-    protected Equipment(string name) => Name = name;
-    
-    /// <summary>
-    /// The core method that delegates the call to the appropriate Visit method 
-    /// on the concrete visitor (Double Dispatch).
-    /// </summary>
-    public abstract void Accept(EquipmentVisitor visitor);
-    
-    /// <summary>
-    /// A base property of the element hierarchy (e.g., base cost).
-    /// </summary>
-    public abstract decimal NetPrice();
+    protected PCComponent(string name) => Name = name;
+
+    // The key method enabling the visitor pattern (Double Dispatch)
+    public abstract void Accept(IDiagnosticVisitor visitor);
 }
 
 /// <summary>
-/// Concrete Element representing a simple component.
+/// A simple PC component — represents a Floppy Drive.
 /// </summary>
-class FloppyDisk : Equipment
+class FloppyDrive : PCComponent
 {
-    public FloppyDisk(string name, decimal price) : base(name) { Price = price; }
-    public decimal Price { get; }
-    public override decimal NetPrice() => Price;
-    
-    /// <summary>
-    /// Implements Accept, directing the visitor to use the specific VisitFloppyDisk method.
-    /// </summary>
-    public override void Accept(EquipmentVisitor visitor) => visitor.VisitFloppyDisk(this);
-}
+    public int PowerUsageWatts { get; }
+    public int TemperatureCelsius { get; }
+    public string HealthStatus { get; }
 
-/// <summary>
-/// Concrete Element representing another simple component.
-/// </summary>
-class Card : Equipment
-{
-    public Card(string name, decimal price) : base(name) { Price = price; }
-    public decimal Price { get; }
-    public override decimal NetPrice() => Price;
-    
-    /// <summary>
-    /// Implements Accept, directing the visitor to use the specific VisitCard method.
-    /// </summary>
-    public override void Accept(EquipmentVisitor visitor) => visitor.VisitCard(this);
-}
-
-/// <summary>
-/// Concrete Element that also acts as a Composite (contains other equipment).
-/// </summary>
-class Chassis : Equipment
-{
-    private readonly List<Equipment> _parts = new();
-    
-    public Chassis(string name) : base(name) { }
-    
-    public void Add(Equipment part) => _parts.Add(part);
-    
-    /// <summary>
-    /// Calculates the cumulative price of its parts and applies a 10% discount.
-    /// </summary>
-    public override decimal NetPrice()
+    public FloppyDrive(string name, int watts, int temp, string health)
+        : base(name)
     {
-        decimal total = 0;
-        foreach (var p in _parts) total += p.NetPrice();
-        return total * 0.9m;
+        PowerUsageWatts = watts;
+        TemperatureCelsius = temp;
+        HealthStatus = health;
     }
-    
-    /// <summary>
-    /// Implements Accept. Crucially, it traverses the structure (its parts) 
-    /// before accepting the visit for itself.
-    /// </summary>
-    public override void Accept(EquipmentVisitor visitor)
+
+    public override void Accept(IDiagnosticVisitor visitor) => visitor.VisitFloppyDrive(this);
+}
+
+/// <summary>
+/// Represents a Graphics Card.
+/// </summary>
+class GraphicsCard : PCComponent
+{
+    public int PowerUsageWatts { get; }
+    public int TemperatureCelsius { get; }
+    public string HealthStatus { get; }
+
+    public GraphicsCard(string name, int watts, int temp, string health)
+        : base(name)
     {
-        // 1. Recursively accept the visitor for all child parts
-        foreach (var p in _parts)
-            p.Accept(visitor);
-        
-        // 2. Accept the visit for the composite element itself
-        visitor.VisitChassis(this);
+        PowerUsageWatts = watts;
+        TemperatureCelsius = temp;
+        HealthStatus = health;
+    }
+
+    public override void Accept(IDiagnosticVisitor visitor) => visitor.VisitGraphicsCard(this);
+}
+
+/// <summary>
+/// Represents a Motherboard (System Board).
+/// </summary>
+class Motherboard : PCComponent
+{
+    public int PowerUsageWatts { get; }
+    public int TemperatureCelsius { get; }
+    public string HealthStatus { get; }
+
+    public Motherboard(string name, int watts, int temp, string health)
+        : base(name)
+    {
+        PowerUsageWatts = watts;
+        TemperatureCelsius = temp;
+        HealthStatus = health;
+    }
+
+    public override void Accept(IDiagnosticVisitor visitor) => visitor.VisitMotherboard(this);
+}
+
+/// <summary>
+/// Composite component — represents the overall PC system.
+/// Contains multiple PC components.
+/// </summary>
+class SystemUnit : PCComponent
+{
+    private readonly List<PCComponent> _components = new();
+
+    public SystemUnit(string name) : base(name) { }
+
+    public void Add(PCComponent component) => _components.Add(component);
+
+    public override void Accept(IDiagnosticVisitor visitor)
+    {
+        foreach (var component in _components)
+            component.Accept(visitor);
+
+        visitor.VisitSystemUnit(this);
     }
 }
 
-// --- 2. Visitor Hierarchy (The Operations) ---
+// ------------------------------
+// 2. VISITOR INTERFACE
+// ------------------------------
 
 /// <summary>
-/// The Abstract Visitor class declaring a Visit method for every concrete element.
+/// Visitor interface defining one Visit() method for each component type.
 /// </summary>
-abstract class EquipmentVisitor
+interface IDiagnosticVisitor
 {
-    // Default implementations are empty, allowing concrete visitors to ignore elements if necessary.
-    public virtual void VisitFloppyDisk(FloppyDisk floppy) { }
-    public virtual void VisitCard(Card card) { }
-    public virtual void VisitChassis(Chassis chassis) { }
+    void VisitFloppyDrive(FloppyDrive floppy);
+    void VisitGraphicsCard(GraphicsCard gpu);
+    void VisitMotherboard(Motherboard mb);
+    void VisitSystemUnit(SystemUnit unit);
+}
+
+// ------------------------------
+// 3. CONCRETE VISITORS
+// ------------------------------
+
+/// <summary>
+/// Concrete Visitor that calculates total power usage across all components.
+/// </summary>
+class PowerConsumptionVisitor : IDiagnosticVisitor
+{
+    public int TotalPower { get; private set; }
+
+    public void VisitFloppyDrive(FloppyDrive floppy)
+    {
+        Console.WriteLine($"[POWER] {floppy.Name}: {floppy.PowerUsageWatts}W");
+        TotalPower += floppy.PowerUsageWatts;
+    }
+
+    public void VisitGraphicsCard(GraphicsCard gpu)
+    {
+        Console.WriteLine($"[POWER] {gpu.Name}: {gpu.PowerUsageWatts}W");
+        TotalPower += gpu.PowerUsageWatts;
+    }
+
+    public void VisitMotherboard(Motherboard mb)
+    {
+        Console.WriteLine($"[POWER] {mb.Name}: {mb.PowerUsageWatts}W");
+        TotalPower += mb.PowerUsageWatts;
+    }
+
+    public void VisitSystemUnit(SystemUnit unit)
+    {
+        Console.WriteLine($"[POWER] --- Total Power Draw: {TotalPower}W ---");
+    }
 }
 
 /// <summary>
-/// Concrete Visitor implementing the pricing operation.
-/// It maintains state (TotalPrice) specific to this operation.
+/// Concrete Visitor that performs health and temperature diagnostics.
 /// </summary>
-class PricingVisitor : EquipmentVisitor
+class HealthCheckVisitor : IDiagnosticVisitor
 {
-    public decimal TotalPrice { get; private set; }
+    public void VisitFloppyDrive(FloppyDrive floppy)
+    {
+        Console.WriteLine($"[HEALTH] {floppy.Name}: {floppy.HealthStatus} | Temp: {floppy.TemperatureCelsius}°C");
+    }
 
-    // Adds the individual component's price
-    public override void VisitFloppyDisk(FloppyDisk floppy) => TotalPrice += floppy.NetPrice();
-    
-    // Adds the individual component's price
-    public override void VisitCard(Card card) => TotalPrice += card.NetPrice();
-    
-    // Adds the discounted total price of the composite element
-    public override void VisitChassis(Chassis chassis) => TotalPrice += chassis.NetPrice();
+    public void VisitGraphicsCard(GraphicsCard gpu)
+    {
+        Console.WriteLine($"[HEALTH] {gpu.Name}: {gpu.HealthStatus} | Temp: {gpu.TemperatureCelsius}°C");
+    }
+
+    public void VisitMotherboard(Motherboard mb)
+    {
+        Console.WriteLine($"[HEALTH] {mb.Name}: {mb.HealthStatus} | Temp: {mb.TemperatureCelsius}°C");
+    }
+
+    public void VisitSystemUnit(SystemUnit unit)
+    {
+        Console.WriteLine($"[HEALTH] --- System Diagnostics Complete ---");
+    }
 }
 
-/// <summary>
-/// Concrete Visitor implementing the inventory counting operation.
-/// It maintains state (TotalItems) specific to this operation.
-/// </summary>
-class InventoryVisitor : EquipmentVisitor
-{
-    public int TotalItems { get; private set; }
-    
-    // Increments count for every discrete FloppyDisk found
-    public override void VisitFloppyDisk(FloppyDisk floppy) => TotalItems++;
-    
-    // Increments count for every discrete Card found
-    public override void VisitCard(Card card) => TotalItems++;
-    
-    // Increments count for the Chassis itself
-    public override void VisitChassis(Chassis chassis) => TotalItems++;
-}
-
-// --- 3. Client ---
+// ------------------------------
+// 4. CLIENT
+// ------------------------------
 
 /// <summary>
-/// Client code that builds the object structure and initiates the Visitor operations.
+/// The client builds the PC structure and applies diagnostics (visitors).
 /// </summary>
 class Program
 {
     static void Main()
     {
-        Console.WriteLine("--- Visitor Pattern Demonstration: Equipment Inventory ---");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("=== Visitor Pattern Demo: PC Diagnostics System ===\n");
+        Console.ResetColor();
 
-        // 1. Build the object structure (The Equipment Composite)
-        var chassis = new Chassis("PC Tower Chassis");
-        chassis.Add(new FloppyDisk("3.5in Floppy Drive", 10m));
-        chassis.Add(new Card("Gigabit Ethernet Card", 25m));
-        // Note: The chassis NetPrice is (10 + 25) * 0.9 = 31.5m
+        // Create the composite PC structure
+        var systemUnit = new SystemUnit("Gaming PC System");
+        systemUnit.Add(new FloppyDrive("Kingston USB Floppy", 5, 30, "Healthy"));
+        systemUnit.Add(new GraphicsCard("NVIDIA RTX 4080", 320, 72, "Stable"));
+        systemUnit.Add(new Motherboard("ASUS Prime Z790", 70, 40, "Healthy"));
 
-        Console.WriteLine($"\nEquipment Structure created: '{chassis.Name}' with 2 parts.");
-        Console.WriteLine($"Base price of Floppy: $10.0");
-        Console.WriteLine($"Base price of Card: $25.0");
-        Console.WriteLine($"Chassis discounted price: $31.5 (35 * 0.9)");
+        // Create visitors
+        var powerVisitor = new PowerConsumptionVisitor();
+        var healthVisitor = new HealthCheckVisitor();
 
-        // 2. Create Visitors
-        var pricingVisitor = new PricingVisitor();
-        var inventoryVisitor = new InventoryVisitor();
+        // Apply visitors (diagnostics)
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Running Power Consumption Diagnostic...\n");
+        Console.ResetColor();
+        systemUnit.Accept(powerVisitor);
 
-        // 3. Apply Visitors to the structure (start the traversal)
-        Console.WriteLine("\nApplying PricingVisitor and InventoryVisitor...");
-        chassis.Accept(pricingVisitor);
-        chassis.Accept(inventoryVisitor);
+        Console.WriteLine("\n---------------------------------------------\n");
 
-        // 4. Output Results
-        Console.WriteLine("\n--- Results ---");
-        
-        // Pricing calculation: 10 (Floppy) + 25 (Card) + 31.5 (Chassis NetPrice) = 66.5
-        Console.WriteLine($"Total Price (Accumulated Costs): ${pricingVisitor.TotalPrice}");
-        
-        // Inventory count: 1 (Floppy) + 1 (Card) + 1 (Chassis) = 3
-        Console.WriteLine($"Total Items (Inventory Count): {inventoryVisitor.TotalItems}");
-        
-        Console.WriteLine("\nNote: New operations (e.g., DiagnosticsVisitor) can be added easily without changing Equipment classes.");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Running Health Check Diagnostic...\n");
+        Console.ResetColor();
+        systemUnit.Accept(healthVisitor);
+
+        // Final summary
+        Console.WriteLine("\n---------------------------------------------");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"TOTAL SYSTEM POWER USAGE: {powerVisitor.TotalPower}W");
+        Console.ResetColor();
+
+        Console.WriteLine("\nDiagnostics Complete.");
+        Console.WriteLine("\nPress any key to exit...");
+        Console.ReadKey();
     }
 }
