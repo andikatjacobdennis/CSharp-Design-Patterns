@@ -16,7 +16,7 @@ In simpler terms:
 
 ### Diagram
 
-
+![UML Diagram illustrating the pattern](structure.png)
 
 ---
 
@@ -271,7 +271,3 @@ The system is *open* for new operations but *closed* for modification of compone
 **Compilers / AST Processing** — Apply visitors for syntax checking, code generation, or optimization.
 **Game Engines / Graphics Systems** — Traverse scene graphs for rendering, physics, or lighting calculations.
 **Business Applications** — Apply financial, audit, or reporting visitors over a data model.
-
----
-
-Would you like me to add a **matching UML diagram (image)** and **one-sentence summary tagline** (for GitHub or video thumbnail)?
